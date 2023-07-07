@@ -1,10 +1,31 @@
 ---
 layout: post
-title:  "the Constant Product Formula for Liquidity Pools"
+title:  "The Constant Product Formula for Liquidity Pools"
 date:   2023-07-07
 categories: crypto
-usemathjax: true
+use_math: true
 ---
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      inlineMath: [              // start/end delimiter pairs for in-line math
+      ['$', '$']
+    ],
+    displayMath: [             // start/end delimiter pairs for display math
+      ['$$', '$$'],
+      ['\\[', '\\]']
+    ],
+    processEscapes: true,
+    processEnvironments: true
+    }
+  });
+</script>
+
+
+<script type="text/javascript" async
+src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?
+config=TeX-AMS-MML_HTMLorMML"></script>
 
 
 The basic formula for liquidity pools
@@ -38,7 +59,7 @@ Now, for this to work we must ensure that the price changes consistently with ea
 The easiest way to see why this is, is that if someone buys 1 BTC out of the pool, then sells the BTC back in the pool should be in the same state as in the beginning, with the same price. But, since the price is higher after the first transaction,
 the trader would gain money buy doing this.
 
-Let's do an example. $x_0=10$ and $y_0=200 \\, 000$. So the price initially is  $p=20 \\, 000$ USDC per BTC.
+Let's do an example. $x_0=10$ and $y_0=200 \, 000$. So the price initially is  $p=20 \, 000$ USDC per BTC.
 
 Now buy one BTC from the pool:
 
@@ -46,27 +67,27 @@ $$
 \begin{align}
  \Delta x &= -1 \\
  x_1 &= x_0 + \Delta x = 9    \\
- \Delta y &= - (-1) \times 20\\,000 = 20\\,000 \\
- y_1 &= y_0 + \Delta y = 200 \\, 000 + 20\\,000 = 220\\,000 \\
- p_1 &= y_1 / x_1 =  24\\,444.44 \\
+ \Delta y &= - (-1) \times 20\,000 = 20\,000 \\
+ y_1 &= y_0 + \Delta y = 200 \, 000 + 20\,000 = 220\,000 \\
+ p_1 &= y_1 / x_1 =  24\,444.44 \\
 \end{align}
 $$
 
-The index indicates the state after transaction one. The pool has now $x_1=9$ BTC , and $y_1=220\\,000$ USDC, and the new price would be $p_1 = y_1/x_1 = 24\\,444.44$ USD per BTC .
+The index indicates the state after transaction one. The pool has now $x_1=9$ BTC , and $y_1=220\,000$ USDC, and the new price would be $p_1 = y_1/x_1 = 24\,444.44$ USD per BTC .
 
-Now we sell one BTC back to the pool at $p_1=24\\,444.44$, so $\Delta x = +1$.
+Now we sell one BTC back to the pool at $p_1=24\,444.44$, so $\Delta x = +1$.
 
 $$
 \begin{align}
  \Delta x &= 1    \\
   x_2 &= x_1 + \Delta x = 10    \\
- \Delta y &= \Delta x \times p_1 = - (1) \times 24\\,444.44 = -24\\,444.44 \\
- y_2 &= y_1 + \Delta y = 220 \\, 000 - 24\\,444.44 = 195\\,555.56 \\
+ \Delta y &= - \Delta x \times p_1 = - (1) \times 24\,444.44 = -24\,444.44 \\
+ y_2 &= y_1 + \Delta y = 220 \, 000 - 24\,444.44 = 195\,555.56 \\
 \end{align}
 $$
 
-Wow, the trader paid $20\\,000$ USDC for one BTC and sold it back to the pool for $24\\,444.44$,
-gaining $4\\,444.44$ USDC in the process, which is missing from the pool now.
+Wow, the trader paid $20\,000$ USDC for one BTC and sold it back to the pool for $24\,444.44$,
+gaining $4\,444.44$ USDC in the process, which is missing from the pool now.
 
 The mistake is, we calculate the price independently from how large the transaction is. The price is really a function of $x$ and  $y$. The solution is to divide the transaction into many smaller ones, to give the price a chance to change.
 
@@ -96,6 +117,7 @@ print(f"missing y = {round(200_000 - y,2)}")
 ```
 
 Let's put the missing money in a table for various number of steps $n$.
+
 | n  | missing y  |
 | ---- | ------------- |
 | 1  | 4444.44  |
@@ -141,12 +163,12 @@ The constant $k$ is really just a constant. You calculate it in the beginning an
 
 Now let's try the 1 BTC round trip trade again:
 
-We have $k = 10 * 200\\,000 = 2\\,000\\,000 $
+We have $k = 10 * 200\,000 = 2\,000\,000 $
 
-Buy 1 BTC yields $x_1 = 10-1 = 9 $,  $y_1 = k / 9 = 222\\,222.22$.
-The trader has to pay $\Delta y = y_1 - y_0 = 222\\,222.22 - 200\\,000 =  22\\,222.22$.
+Buy 1 BTC yields $x_1 = 10-1 = 9 $,  $y_1 = k / 9 = 222\,222.22$.
+The trader has to pay $\Delta y = y_1 - y_0 = 222\,222.22 - 200\,000 =  22\,222.22$.
 
-Selling 1 BTC back to the pool gives $x_2 = x_1 + \Delta x = 9 + 1 = 10$,  $y_2 = k / 10 = 200\\,000$,
-and $\Delta y = y_2 - y_1 = -22\\,222.22$, which is negative so the pool gets reduced by this amount and goes back to the trader.
+Selling 1 BTC back to the pool gives $x_2 = x_1 + \Delta x = 9 + 1 = 10$,  $y_2 = k / 10 = 200\,000$,
+and $\Delta y = y_2 - y_1 = -22\,222.22$, which is negative so the pool gets reduced by this amount and goes back to the trader.
 
 Everything works now.
